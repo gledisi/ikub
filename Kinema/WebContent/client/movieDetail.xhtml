@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+
+
+
+<h:body>
+
+	<p:growl id="growl" life="7000" />
+
+	<ui:include name="header" src="clientSidebar.xhtml" />
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="rightPanel.xhtml" />
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+			<div class="col-lg-10">
+				<div id="basic"
+					class="ui-panel ui-widget ui-widget-content ui-corner-all"
+					style="margin-bottom: 20px">
+					<div id="basic_header"
+						class="ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all">
+						<span class="ui-panel-title"><h:outputText
+								value="#{movieBean.getThisMovie().title}" /></span>
+					</div>
+					<div id="basic_content" class="ui-panel-content ui-widget-content">
+						<table cellpadding="10">
+							<tbody>
+								<tr>
+									<td></td>
+									<td><h:outputText value="#{movieBean.getThisMovie().storyline}" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="basic_footer" class="ui-panel-footer ui-widget-content">
+						<h:outputText class="menu-title" value="Movie Details" />
+						<div id="form_content"
+							class="ui-datalist-content ui-widget-content">
+							<ol id="form_list" class="list-group">
+								<li class="list-group-item"><h:outputText
+										value="Genre: #{movieBean.getThisMovie().genre}" /></li>
+								<li class="list-group-item"><h:outputText
+										value="Imdb: #{movieBean.getThisMovie().imdb} " /></li>
+								<li class="list-group-item"><h:outputText
+										value="Length: #{movieBean.getThisMovie().length} minutes" /></li>
+								<li class="list-group-item"><h:outputText
+										value="Start on:: #{movieBean.getThisMovie().startDate}" /></li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- tabela-->
+			<div class="col-lg-10">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Show's Table</strong>
+					</div>
+					<div class="card-body">
+						<h:form id="form">
+							<p:dataTable id="table" var="show"
+								value="#{showBean.getMoviesShow()}" style="text-align:center"
+								widgetVar="dataTableWidgetVar" rows="5" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+								<p:column headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column headerText="Date">
+									<h:outputText value="#{show.date}" />
+								</p:column>
+
+								<p:column headerText="Time">
+									<h:outputText value="#{show.time}">
+										<f:convertDateTime type="date" pattern="HH:mm" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Reserv">
+
+									<h:commandButton value="Reserve" class="btn btn-primary btn-sm"
+										action="#{reservationBean.addReservation(show.id)}" update="growl" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .content -->
+	</div>
+
+	<ui:include name="footer" src="/components/footer.xhtml" />
+</h:body>
+</html>

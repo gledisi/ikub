@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+
+<h:head>
+
+	<ui:insert>
+		<ui:include name="style" src="/view/components/styleFiles.xhtml" />
+	</ui:insert>
+</h:head>
+
+<h:body class="bg-dark">
+
+	<div class="sufee-login d-flex align-content-center flex-wrap">
+		<div class="container">
+			<div class="login-content">
+				<div class="login-logo">
+					<a href="index.html"> <img class="align-content"
+						src="images/logo.png" alt="" />
+					</a>
+				</div>
+				<div class="login-form">
+					<h:form>
+						<div class="form-group">
+							<label>Name</label>
+							<h:inputText value="#{signupBean.user.emer}"
+								class="form-control" a:placeholder="Name" />
+						</div>
+						<div class="form-group">
+							<label>Surname</label>
+							<h:inputText value="#{signupBean.user.mbiemer}"
+								class="form-control" a:placeholder="Surname" />
+						</div>
+						<div class="form-group">
+							<label>Email address</label>
+							<h:inputText value="#{signupBean.user.email}"
+								class="form-control" a:placeholder="email" />
+						</div>
+						<div class="form-group">
+							<label>Password</label>
+							<h:inputSecret value="#{signupBean.user.password}"
+								class="form-control" a:placeholder="Surname" />
+						</div>
+						<h:commandButton class="btn btn-primary btn-flat m-b-30 m-t-30"
+							action="#{userCrudBean.createUser()}" value="Register" />
+						<div class="register-link m-t-15 text-center">
+							<p>
+								Already have account ?
+								<h:link outcome="login" value="Sign in" />
+							</p>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<ui:insert>
+		<ui:include name="footer" src="/view/components/footer.xhtml" />
+	</ui:insert>
+</h:body>
+
+</html>

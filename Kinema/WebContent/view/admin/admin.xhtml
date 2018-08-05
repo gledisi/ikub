@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:insert>
+	<ui:include name="header" src="/view/components/header.xhtml" />
+</ui:insert>
+
+<h:body>
+#{userBean.user.emer}  #{userBean.user.mbiemer}
+	<ui:insert>
+		<ui:include name="header" src="/view/admin/adminSidebar.xhtml" />
+	</ui:insert>
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:insert>
+			<ui:include name="header" src="/view/components/rightPanel.xhtml" />
+		</ui:insert>
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+
+			<!-- forma-->
+
+			<div class="col-lg-12">
+				<h:form>
+					<div class="card">
+						<div class="card-header">
+							<strong>Movie</strong><small> Form</small>
+						</div>
+
+						<div class="card-body card-block">
+
+							<div class="row form-group">
+								<div class="col col-sm-4">
+									<div class="form-group">
+										<label for="titulli" class=" form-control-label">Movie
+											Title</label>
+										<h:inputText id="titulli" value="#{movieBean.movie.title}"
+											class="form-control" a:placeholder="Shrek(english subtitles)" />
+									</div>
+								</div>
+								<div class="col col-sm-3">
+									<div class="form-group">
+
+										<label for="genre" class=" form-control-label">Genre</label>
+										<h:selectOneMenu id="genre" class="form-control"
+											value="#{movieBean.movie.genre}">
+											<f:selectItem itemLabel="Select One" itemValue="" />
+											<f:selectItems value="#{movieBean.list}" />
+										</h:selectOneMenu>
+									</div>
+								</div>
+								<div class="col col-sm-2">
+									<div class="form-group">
+										<label for="length" class="form-control-label">Length</label>
+										<h:inputText id="length" value="#{movieBean.movie.length}"
+											class="form-control" a:placeholder="120" />
+									</div>
+								</div>
+								<div class="col col-sm-2">
+									<div class="form-group">
+										<label for="imdb" class="form-control-label">Imdb</label>
+										<h:inputText id="imdb" value="#{movieBean.movie.imdb}"
+											class="form-control" a:placeholder="7.8" />
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="row form-group">
+								<div class="col col-sm-3">
+									<div class="form-group">
+										<label class=" form-control-label">Date input</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<h:inputText value="#{movieBean.movie.startDate}">
+												<f:convertDateTime dateStyle="full" pattern="yyyy-MM-dd" />
+											</h:inputText>
+										</div>
+										<small class="form-text text-muted">ex. dd/mm/yyyy</small>
+									</div>
+								</div>
+								<div class="col col-sm-3">
+									<div class="form-group">
+										<label class=" form-control-label">Date input</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<h:inputText value="#{movieBean.movie.endDate}">
+												<f:convertDateTime dateStyle="full" pattern="yyyy-MM-dd" />
+											</h:inputText>
+										</div>
+										<small class="form-text text-muted">ex. dd/mm/yyyy</small>
+									</div>
+								</div>
+
+								<div class="col col-sm-6">
+									<div class="form-group">
+										<label for="storyline" class="form-control-label">StoryLine</label>
+										<div class="input-group">
+											<h:inputTextarea id="storyline"
+												value="#{movieBean.movie.storyline}" class="form-contro"
+												cols="55" rows="3"
+												a:placeholder="Storyline of the movie..." />
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+						<div class="card-footer">
+							<div class="offset-md-5 col-md-4">
+								<h:commandButton class="btn btn-primary btn-sm"
+									action="#{movieBean.createMovie()}" value="Submit" />
+								<button type="reset" class="btn btn-danger btn-sm">
+									<i class="fa fa-ban"></i> Reset
+								</button>
+							</div>
+
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+
+
+			<!-- tabela-->
+			<div class="offset-lg-1 col-lg-10">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Stripped Table</strong>
+					</div>
+					<div class="card-body">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th scope="col">#</th>
+									<th scope="col">First</th>
+									<th scope="col">Last</th>
+									<th scope="col">Handle</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">1</th>
+									<td>Mark</td>
+									<td>Otto</td>
+									<td>@mdo</td>
+								</tr>
+								<tr>
+									<th scope="row">2</th>
+									<td>Jacob</td>
+									<td>Thornton</td>
+									<td>@fat</td>
+								</tr>
+								<tr>
+									<th scope="row">3</th>
+									<td>Larry</td>
+									<td>the Bird</td>
+									<td>@twitter</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .content -->
+	</div>
+
+	<ui:insert>
+		<ui:include name="footer" src="/view/components/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

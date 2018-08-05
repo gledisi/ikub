@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+
+<h:body>
+	<p:growl id="growl" life="2500" />
+
+	<ui:include name="header" src="clientSidebar.xhtml" />
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="rightPanel.xhtml" />
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+			<!-- tabela-->
+			<div class="col col-lg-11">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Movie's Table</strong>
+					</div>
+					<div class="card-body">
+						<h:form>
+							<p:dataTable var="movie" value="#{movieBean.movies}"
+								style="text-align:center" widgetVar="dataTableWidgetVar"
+								rows="5" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+								<p:column headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column headerText="Title">
+									<p:commandLink 
+										action="#{movieBean.movieDetail(movie.id)}"
+										class="btn btn-link">
+										<f:param id="movieP" name="movieId" value="#{movie.id}" />
+										<h:outputText value="#{movie.title}" />
+									</p:commandLink>
+								</p:column>
+
+								<p:column headerText="Genre">
+									<h:outputText value="#{movie.genre}" />
+								</p:column>
+
+								<p:column headerText="Imdb">
+									<h:outputText value="#{movie.imdb}" />
+								</p:column>
+								<p:column headerText="Start on:">
+									<h:outputText value="#{movie.startDate}" />
+								</p:column>
+
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .content -->
+	</div>
+
+	<ui:include name="footer" src="/components/footer.xhtml" />
+</h:body>
+</html>

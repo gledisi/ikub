@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:include name="header" src="/components/header.xhtml" />
+<f:metadata>
+	<f:viewParam name="movieId" value="#{movieBean.movie.id}" />
+	<f:viewAction action="#{movieBean.getMovieById()}" />
+</f:metadata>
+
+<h:body>
+	<p:growl id="growl" life="7000" />
+
+	<ui:include name="header" src="/admin/adminSidebar.xhtml" />
+
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="rightPanel.xhtml" />
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+
+			<!-- forma-->
+			<div class="col-lg-3"></div>
+				<div class="col-lg-6 ">
+					<h:form>
+						<div class="card">
+							<div class="card-header">
+								<strong>Edit Movie</strong>
+							</div>
+
+							<div class="card-body card-block">
+
+								<div class="row form-group">
+								<div class="col-lg-2"></div>
+									<div class="col col-lg-8">
+										<div class="form-group">
+											<label for="titulli" class=" form-control-label">Movie
+												Title</label>
+											<h:inputText id="titulli" value="#{movieBean.movie.title}"
+												class="form-control"
+												pt:placeholder="Shrek(english subtitles)" required="true"
+												requiredMessage="Zgjidhni titullin e filmit" />
+										</div>
+									</div>
+								</div>
+								<div class="row form-group">
+								<div class="col-lg-2"></div>
+									<div class="col col-sm-8">
+										<div class="form-group">
+
+											<label for="genre" class=" form-control-label">Genre</label>
+											<h:selectOneMenu id="genre" class="form-control"
+												value="#{movieBean.movie.genre}" required="true"
+												requiredMessage="Zgjidhni zhanerin e filmit">
+												<f:selectItem itemLabel="Select One" />
+												<f:selectItems value="#{movieBean.allGenres}" />
+											</h:selectOneMenu>
+										</div>
+									</div>
+								</div>
+								<div class="row form-group">
+								<div class="col-lg-2"></div>
+									<div class="col col-sm-8">
+										<div class="form-group">
+											<label for="imdb" class="form-control-label">Imdb</label>
+											<h:inputText id="imdb" value="#{movieBean.movie.imdb}"
+												class="form-control" pt:placeholder="7.8"
+												validatorMessage="Imdb: Jepni nje numer dhjetor nga 1-10 !">
+												<f:validateDoubleRange minimum="1" maximum="10" />
+											</h:inputText>
+										</div>
+									</div>
+								</div>
+								<div class="row form-group">
+								<div class="col-lg-2"></div>
+									<div class="col col-sm-8">
+										<div class="form-group">
+											<label for="storyline" class="form-control-label">StoryLine</label>
+											<div class="input-group">
+												<h:inputTextarea id="storyline"
+													value="#{movieBean.movie.storyline}" class="form-contro"
+													cols="55" rows="3"
+													pt:placeholder="Storyline of the movie..." required="true"
+													requiredMessage="Pershkrimi i filmit nuk duhet bosh!"
+													validatorMessage="StoryLine: duhet te kete 50-250 karaktere!">
+													<f:validateRegex pattern=".{50,255}" />
+												</h:inputTextarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="card-footer">
+								<div class="offset-md-2 col-md-8">
+
+									<h:commandButton class="btn btn-primary btn-lg btn-block"
+										action="#{movieBean.editMovie()}" value="Confirm Edit" />
+
+								</div>
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+</h:body>
+</html>

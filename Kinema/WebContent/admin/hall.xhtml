@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:insert>
+	<ui:include name="header" src="/components/header.xhtml" />
+</ui:insert>
+
+<h:body>
+	<p:growl id="growl" life="2000" />
+	<ui:insert>
+		<ui:include name="header" src="/admin/adminSidebar.xhtml" />
+	</ui:insert>
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:insert>
+			<ui:include name="header" src="rightPanel.xhtml" />
+		</ui:insert>
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+
+			<!-- forma-->
+
+			<div class="col-lg-12">
+				<h:form>
+					<div class="card">
+						<div class="card-header">
+							<strong>Add Hall</strong>
+						</div>
+
+						<div class="card-body card-block">
+
+							<div class="row form-group">
+								<div class="offset-4 col col-sm-4">
+									<div class="form-group">
+										<div class="input-group">
+											<h:inputText id="name" value="#{hallBean.hall.name}"
+												class="form-control" pt:placeholder="Hall one"
+												required="true"
+												requiredMessage="Emri salles nuk mund te lihet bosh" />
+											<div class="input-group-btn">
+												<h:commandButton class="btn btn-primary"
+													action="#{hallBean.addHall()}" value="Submit" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+
+
+			<!-- tabela-->
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Hall's Table</strong>
+					</div>
+					<div class="card-body">
+						<h:form id="hallform">
+							<p:dataTable id="halltable" var="hall" value="#{hallBean.halls}"
+								style="text-align:center" widgetVar="dataTableWidgetVar"
+								rows="5" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+								<p:column headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column headerText="Name">
+									<h:outputText value="#{hall.name}" />
+								</p:column>
+
+								<p:column headerText="Monitors">
+									<h:outputText value="#{monitorBean.countMonitors(hall.id)}" />
+								</p:column>
+
+								<p:column headerText="Edit">
+									<h:commandButton value="Edit" type="button"
+										class="btn btn-primary fa fa-edit"
+										onclick="editModalHall('#{hall.name}','#{hall.id}')" />
+								</p:column>
+								<p:column headerText="Delete">
+
+									<p:commandButton value="Delete" styleClass="deleteButton"
+										action="#{hallBean.deleteHall(hall.id)}"
+										update=":hallform:halltable growl">
+
+										<p:confirm header="Confirm" message="Are you sure ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+
+										<p:commandButton value="Yes" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .content -->
+	</div>
+
+
+	<div class="modal fade bs-example-modal-lg" id="editHall">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h4 class="modal-title" id="myModalLabel">Edito Hall</h4>
+
+				</div>
+				<h:form class="form-horizontal form-label-left" id="editHall">
+					<div class="modal-body">
+						<div class="row form-group">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<div class="input-group">
+										<h:inputText id="name" value="#{hallBean.hall.name}"
+											class="form-control hallName" pt:placeholder="Hall one"
+											required="true"
+											requiredMessage="Emri salles nuk mund te lihet bosh" />
+										<div class="input-group-btn">
+											<h:inputHidden class="modalId" id="hallId"
+												value="#{hallBean.hall.id}" />
+											<p:commandButton styleClass="editButton"
+												update=":hallform:halltable growl" pt:data-dismiss="modal"
+												action="#{hallBean.editHall()}" value="Edito" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
+
+	<ui:insert>
+		<ui:include name="footer" src="/components/footer.xhtml" />
+	</ui:insert>
+</h:body>
+
+
+</html>

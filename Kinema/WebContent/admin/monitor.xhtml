@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:insert>
+	<ui:include name="header" src="/components/header.xhtml" />
+</ui:insert>
+
+<h:body>
+
+	<p:growl id="growl" life="7000" showDetail="false" />
+	<ui:insert>
+		<ui:include name="header" src="/admin/adminSidebar.xhtml" />
+	</ui:insert>
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:insert>
+			<ui:include name="header" src="rightPanel.xhtml" />
+		</ui:insert>
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+
+			<!-- forma-->
+
+			<div class="col-lg-12">
+				<h:form>
+					<div class="card">
+						<div class="card-header">
+							<strong>Add Monitor</strong>
+						</div>
+
+						<div class="card-body card-block">
+
+							<div class="row form-group">
+
+								<div class="col col-sm-4">
+									<div class="form-group">
+										<label for="name" class=" form-control-label">Monitor
+											Name </label>
+										<h:inputText id="name" value="#{monitorBean.monitor.name}"
+											class="form-control" pt:placeholder="Monitor one"
+											required="true"
+											requiredMessage="Emri monitorit nuk duhet bosh!" />
+									</div>
+								</div>
+								<div class="col col-sm-3">
+									<div class="form-group">
+
+										<label for="hall" class=" form-control-label">Hall</label>
+
+										<p:selectOneMenu value="#{hallBean.hall.id}"
+											style="width:230px" required="true"
+											requiredMessage="Zgjidhni Sallen!">
+											<f:selectItem itemLabel="Hall" />
+											<f:selectItems value="#{hallBean.halls}" var="hall"
+												itemValue="#{hall.id}" itemLabel="#{hall.name}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+								<div class="col col-sm-2">
+									<div class="form-group">
+										<label for="rows" class="form-control-label">Rows</label>
+										<h:inputText id="rows" value="#{monitorBean.rows}"
+											class="form-control" pt:placeholder="6" required="true"
+											requiredMessage="Numri rreshtave eshte bosh!"
+											validatorMessage="Rreshti karrigeve: Jepni nje numer nga 5-25 !">
+											<f:validateLongRange minimum="5" maximum="25" />
+										</h:inputText>
+									</div>
+								</div>
+								<div class="col col-sm-2">
+									<div class="form-group">
+										<label for="columns" class="form-control-label">Columns</label>
+										<h:inputText id="columns" value="#{monitorBean.columns}"
+											class="form-control" pt:placeholder="8" required="true"
+											requiredMessage="Numri Kolonave eshte bosh!"
+											validatorMessage="Kolona karrigeve: Jepni nje numer nga 5-25 !">
+											<f:validateLongRange minimum="5" maximum="25" />
+										</h:inputText>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-footer">
+							<div class="offset-md-5 col-md-4">
+
+								<h:commandButton class="btn btn-primary btn-sm"
+									action="#{monitorBean.addMonitor()}" value="Submit" />
+
+								<h:commandButton type="reset" class="btn btn-danger btn-sm"
+									value="Reset" />
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+
+
+			<!-- tabela-->
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Monitor's Table</strong>
+					</div>
+					<div class="card-body">
+						<h:form id="monitorForm">
+							<p:dataTable id="monitorTable" var="monitor"
+								value="#{monitorBean.monitors}" style="text-align:center"
+								widgetVar="dataTableWidgetVar" rows="5" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+								<p:column headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column headerText="Name">
+									<h:outputText value="#{monitor.name}" />
+								</p:column>
+
+								<p:column headerText="Hall name">
+									<h:outputText value="#{monitor.hall.name}" />
+								</p:column>
+
+								<p:column headerText="chairs">
+									<h:outputText value="#{monitorBean.countChairs(monitor.id)}" />
+								</p:column>
+
+								<p:column headerText="Edit">
+									<h:commandButton value="Edit" type="button"
+										class="btn btn-primary fa fa-edit"
+										onclick="editModalMonitor('#{monitor.name}','#{monitor.hall.id}','#{monitor.id}')" />
+								</p:column>
+								<p:column headerText="Delete">
+
+									<p:commandButton value="Delete" styleClass="deleteButton"
+										actionListener="#{monitorBean.deleteMonitor(monitor.id)}"
+										update=":monitorForm:monitorTable growl">
+
+										<p:confirm header="Confirm" message="Are you sure ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+
+										<p:commandButton value="Yes" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .content -->
+	</div>
+
+	<div class="modal fade bs-example-modal-lg" id="editMonitor">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+
+					<h4 class="modal-title" id="myModalLabel">Edito Monitor</h4>
+
+				</div>
+				<h:form class="form-horizontal form-label-left" id="editMonitor">
+					<div class="modal-body">
+						<div class="row form-group">
+							<div class="col-sm-12">
+								<div class="col col-sm-6">
+									<div class="form-group">
+										<h:inputText id="name" value="#{monitorBean.monitor.name}"
+											class="form-control monitorName" pt:placeholder="Monitor1"
+											required="true"
+											requiredMessage="Emri monitorit nuk mund te lihet bosh" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<div class="input-group-btn">
+							<h:inputHidden class="modalId" id="monitorId"
+								value="#{monitorBean.monitor.id}" />
+								<h:inputHidden class="modalId" id="hallId"
+								value="#{hallBean.hall.id}" />
+							<p:commandButton styleClass="editButton"
+								update=":monitorForm:monitorTable growl" pt:data-dismiss="modal"
+								action="#{monitorBean.editMonitor()}" value="Edito" />
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
+	<ui:insert>
+		<ui:include name="footer" src="/components/footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:include name="header" src="/components/header.xhtml" />
+
+
+<h:body>
+	<p:growl id="growl" life="7000" />
+
+	<ui:include name="header" src="/admin/adminSidebar.xhtml" />
+
+
+	<div id="right-panel" class="right-panel">
+
+		<ui:include name="header" src="rightPanel.xhtml" />
+
+
+
+		<!-- content-->
+		<div class="content mt-3">
+
+			<!-- forma-->
+
+			<div class="col-lg-12">
+				<h:form>
+					<div class="card">
+						<div class="card-header">
+							<strong>Add Movie</strong>
+						</div>
+
+						<div class="card-body card-block">
+
+							<div class="row form-group">
+								<div class="col col-sm-4">
+									<div class="form-group">
+										<label for="titulli" class=" form-control-label">Movie
+											Title</label>
+										<h:inputText id="titulli" value="#{movieBean.movie.title}"
+											class="form-control"
+											pt:placeholder="Shrek(english subtitles)" required="true"
+											requiredMessage="Zgjidhni titullin e filmit" validatorMessage="Emri i filmit nuk eshte ne formatin e duhur" >
+											<f:validateRegex pattern="[a-zA-Z0-9]+" />
+											
+											</h:inputText>
+									</div>
+								</div>
+								<div class="col col-sm-3">
+									<div class="form-group">
+
+										<label for="genre" class=" form-control-label">Genre</label>
+										<h:selectOneMenu id="genre" class="form-control"
+											value="#{movieBean.movie.genre}" required="true"
+											requiredMessage="Zgjidhni zhanerin e filmit">
+											<f:selectItem itemLabel="Select One" />
+											<f:selectItems value="#{movieBean.allGenres}" />
+										</h:selectOneMenu>
+									</div>
+								</div>
+								<div class="col col-sm-2">
+									<div class="form-group">
+										<label for="length" class="form-control-label">Length</label>
+										<h:inputText id="length" value="#{movieBean.movie.length}"
+											class="form-control" pt:placeholder="120" 
+											validatorMessage="Kohezgjatja filmit: Jepni nje numer nga 30-400 !">
+											<f:validateLongRange minimum="30" maximum="400" />
+										</h:inputText>
+									</div>
+								</div>
+								<div class="col col-sm-2">
+									<div class="form-group">
+										<label for="imdb" class="form-control-label">Imdb</label>
+										<h:inputText id="imdb" value="#{movieBean.movie.imdb}"
+											class="form-control" pt:placeholder="7.8"
+											validatorMessage="Imdb: Jepni nje numer dhjetor nga 1-10 !">
+											<f:validateDoubleRange minimum="1" maximum="10" />
+										</h:inputText>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="row form-group">
+
+								<div class="col col-sm-3">
+									<div class="form-group">
+										<label class=" form-control-label">Start Date</label>
+										<div class="input-group">
+											<div class="input-group-addon" id="startDate">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<h:inputText styleClass="movieDate"
+												value="#{movieBean.movie.startDate}" required="true"
+												requiredMessage="Zgjidhni daten e fillimit">
+												<f:convertDateTime dateStyle="full" pattern="yyyy-MM-dd" />
+											</h:inputText>
+										</div>
+									</div>
+								</div>
+								<div class="col col-sm-3">
+									<div class="form-group">
+										<label class=" form-control-label">End Date</label>
+										<div class="input-group">
+											<div class="input-group-addon" id="endDate">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<h:inputText styleClass="movieDate"
+												value="#{movieBean.movie.endDate}" required="true"
+												requiredMessage="Zgjidhni daten e perfundimit">
+												<f:convertDateTime dateStyle="full" pattern="yyyy-MM-dd" />
+											</h:inputText>
+										</div>
+									</div>
+								</div>
+
+								<div class="col col-sm-6">
+									<div class="form-group">
+										<label for="storyline" class="form-control-label">StoryLine</label>
+										<div class="input-group">
+											<h:inputTextarea id="storyline"
+												value="#{movieBean.movie.storyline}" class="form-contro"
+												cols="55" rows="3"
+												pt:placeholder="Storyline of the movie..." required="true"
+												requiredMessage="Pershkrimi i filmit nuk duhet bosh!"
+												validatorMessage="StoryLine: duhet te kete 50-250 karaktere!">
+												<f:validateRegex pattern=".{50,255}" />
+											</h:inputTextarea>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-footer">
+							<div class="offset-md-5 col-md-4">
+
+								<h:commandButton class="btn btn-primary btn-sm"
+									action="#{movieBean.addMovie()}" value="Submit" />
+								<h:commandButton type="reset" class="btn btn-danger btn-sm"
+									value="reset" />
+
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+
+
+
+
+			<!-- tabela-->
+
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">Movie's Table</strong>
+					</div>
+					<div class="card-body">
+						<h:form id="movieform">
+							<p:dataTable id="movietable" var="movie"
+								value="#{movieBean.movies}" style="text-align:center"
+								widgetVar="dataTableWidgetVar" rows="5" paginator="true"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+
+								<p:column headerText="#">
+									<h:outputText value="#{index + 1}" />
+								</p:column>
+
+								<p:column headerText="Title">
+									<h:outputText value="#{movie.title}" />
+								</p:column>
+
+								<p:column headerText="Genre">
+									<h:outputText value="#{movie.genre}" />
+								</p:column>
+
+								<p:column headerText="Imdb">
+									<h:outputText value="#{movie.imdb}" />
+								</p:column>
+								<p:column headerText="Edit">
+									<h:commandButton value="Edit"
+										class="btn btn-primary fa fa-edit" action="#{movieBean.editMovieRedirect()}">
+										<f:param id="movieP" name="movieId" value="#{movie.id}" />
+									</h:commandButton>
+								</p:column>
+								<p:column headerText="Delete">
+									<p:commandButton value="Delete" styleClass="deleteButton"
+										action="#{movieBean.deleteMovie(movie.id)}"
+										update="movieform movietable growl">
+
+										<p:confirm header="Confirm" message="Are you sure ?"
+											icon="ui-icon-alert" />
+									</p:commandButton>
+									<p:confirmDialog global="true" showEffect="fade"
+										hideEffect="fade">
+
+										<p:commandButton value="Yes" type="button"
+											styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+										<p:commandButton value="No" type="button"
+											styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+									</p:confirmDialog>
+								</p:column>
+
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- .content -->
+	</div>
+	<!-- Modal per editimin -->
+
+	<ui:include name="footer" src="/components/footer.xhtml" />
+
+</h:body>
+</html>

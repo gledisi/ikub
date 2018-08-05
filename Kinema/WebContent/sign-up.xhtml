@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+
+
+	<ui:include name="style" src="/components/styleFiles.xhtml" />
+
+</h:head>
+
+<h:body class="bg-dark">
+	<p:growl id="growl" life="5000" />
+
+	<div class="sufee-login d-flex align-content-center flex-wrap">
+		<div class="container">
+			<div class="login-content">
+				<div class="login-logo">
+					<a href="index.html"> <img class="align-content"
+						src="images/logo.png" alt="" />
+					</a>
+				</div>
+				<div class="login-form">
+					<h:form>
+						<div class="form-group">
+							<label>Name</label>
+							<h:inputText value="#{userCrudBean.user.name}"
+								class="form-control" pt:placeholder="Name" required="true"
+								requiredMessage="Emri nuk mund te jete bosh"
+								validatorMessage="Emri duhet te kete vetem shkronja">
+								<f:validateRegex pattern="[a-zA-Z]+" />
+							</h:inputText>
+						</div>
+						<div class="form-group">
+							<label>Surname</label>
+							<h:inputText value="#{userCrudBean.user.surname}"
+								class="form-control" pt:placeholder="Surname" required="true"
+								requiredMessage="Mbiemri nuk mund te lihet bosh"
+								validatorMessage="Mbiemri duhet te kete vetem shkronja">
+								<f:validateRegex pattern="[a-zA-Z]+" />
+							</h:inputText>
+						</div>
+						<div class="form-group">
+							<label>Email address</label>
+							<h:inputText id="email" value="#{userCrudBean.user.email}"
+								class="form-control" pt:placeholder="email" required="true"
+								requiredMessage="Emaili s'mund te jete bosh!"
+								validatorMessage="Emaili nuk eshte ne formatin e duhur">
+								<f:validateRegex
+									pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+								<p:ajax execute="email" />
+							</h:inputText>
+						</div>
+						<div class="form-group">
+							<label>Password</label>
+							<h:inputSecret value="#{userCrudBean.user.password}"
+								class="form-control" required="true" pt:placeholder="******"
+								requiredMessage="Passwordi s'mund te jete bosh!"
+								validatorMessage="Passwordi duhet te kete te pakten 6 karaktere , nje shkronje , nje numer dhe nje karakter special">
+								<f:validateRegex
+									pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})" />
+							</h:inputSecret>
+						</div>
+						<p:commandButton class="btn btn-primary btn-flat m-b-30 m-t-30"
+							action="#{userCrudBean.addUser()}" value="Register"
+							update="growl" />
+						<div class="register-link m-t-15 text-center">
+							<p>
+								Already have account ?
+								<h:link outcome="login" value="Sign in" />
+							</p>
+						</div>
+					</h:form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<ui:include name="footer" src="/components/footer.xhtml" />
+
+</h:body>
+
+</html>
